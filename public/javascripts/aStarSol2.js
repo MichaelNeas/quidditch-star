@@ -1,6 +1,8 @@
-var FastPriorityQueue = require("fastpriorityqueue");
-var searchQueue = new FastPriorityQueue(compareTravelPriorities);
-var visitedSet = new Set();
+const FastPriorityQueue = require('fastpriorityqueue');
+const searchQueue = new FastPriorityQueue(compareTravelPriorities);
+const visitedSet = new Set();
+const D = 1;
+const D2 = Math.SQRT2;
 
 function travel(aPath, aScore){
 	return Object.assign({}, {path:aPath,score:aScore});
@@ -28,14 +30,39 @@ function aye(){
 
 aye();
 
+//length of new path
+function d(path){
+	return path.size;
+}
+
+//heuristic score of neighbornode, diagonal distance
+function h(neighborNode){
+    var dx = abs(node.x - goal.x);
+    var dy = abs(node.y - goal.y);
+    return D * (dx + dy) + (D2 - 2 * D) * Math.min(dx, dy);
+}
+
+//get position
+//+/- 1 to x and y of node for all neighbors
+function getNeighbors(node){
+
+}
+
 function findSnitch(){
-	var currentPath, lastNode;
+	let currentPath, lastNode;
 	while(!searchQueue.isEmpty()){
 		currentPath = searchQueue.poll();
 		lastNode = currentPath.path[currentPath.length-1];
-		lastNode.forEach(function(currentNeighbor){
+		lastNode.forEach(function (currentNeighbor){
 			visitedSet.add(currentPath);
-			var newPath = currentPath.push(currentNeighbor);
+			let newPath = currentPath.push(currentNeighbor);
+			if(currentNeighbor.contents === "SN")
+				return newPath;
+			else{
+				pathScore = d(newPath) + h(currentNeighbor);
+				searchQueue.add(travel(newPath, pathScore));
+			}
+
 		});
 	}
 	return undefined;

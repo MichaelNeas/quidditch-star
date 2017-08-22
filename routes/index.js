@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 
 //api handler
 router.post('/qsolver', function(req, res) {
-    res.send('{"action":"E"}');
+    res.send('{"action":"SE"}');
 });
 
 module.exports = router;
