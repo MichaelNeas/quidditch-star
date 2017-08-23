@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var qsolver = require('../public/javascripts/aStarSol2');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -8,7 +9,11 @@ router.get('/', function(req, res, next) {
 
 //api handler
 router.post('/qsolver', function(req, res) {
-    res.send('{"action":"SE"}');
+  qsolver.tester(req.body)
+    .then(function(move){
+      console.log(move)
+      return res.send({"action":move});
+    });
 });
 
 module.exports = router;
